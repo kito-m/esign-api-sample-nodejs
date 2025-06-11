@@ -1,24 +1,23 @@
 
-// Get your free API Key at: https://www.ontask.io/solutions/ontask-api/
-// Full OnTask API Documentation: https://docs.ontask.io/#overview
-const fs = require('fs');
-const fetch = require('node-fetch');
+// Get your free API Key at: https://www.docubee.com/solutions/integrations/docubee-api
+// Full Docubee API Documentation: https://docs.docubee.app/#overview
+const { createReadStream } = require('fs');
 
-const ontaskUrl = 'https://app.ontask.io/api/v2';
-const apiKey = 'INSERT-API-KEY';
-const emailSigner = 'signer@example.com'
-const emailFinalized = "completed@example.com";
+const docubeeUrl = 'https://docubee.app/api/v2';
+const apiToken = 'YOUR-API-KEY';
+const emailSigner = 'signer@example.com' // Email address of the signer
+const emailFinalized = 'completed@example.com'; // Email address to receive the finalized document
 
 // Upload the file and get a documentid to pass to create a signature endpoint
-// https://docs.ontask.io/#upload
+// https://docs.docubee.app/?javascript#upload
 const uploadSampleDocument = async () => {
 
-    const readStream = fs.createReadStream('./sample-files/sample.pdf');
+    const readStream = createReadStream('./sample-files/sample.pdf');
 
-    const response = await fetch(`${ontaskUrl}/documents`, {
+    const response = await fetch(`${docubeeUrl}/documents`, {
         method: 'POST',
         headers: {
-            'Authorization': apiKey,
+            'Authorization': apiToken,
             'Content-Type': 'application/pdf'
         },
         body: readStream
@@ -29,7 +28,7 @@ const uploadSampleDocument = async () => {
 }
 
 // Call /signature endpoint to start signature process
-// https://docs.ontask.io/#signature-api
+// https://docs.docubee.app/?javascript#signature-api
 const startSignature = async (documentId) => {
 
     const requestBody = JSON.stringify({
@@ -56,10 +55,10 @@ const startSignature = async (documentId) => {
         ]
     });
 
-    const response = await fetch(`${ontaskUrl}/signatures`, {
+    const response = await fetch(`${docubeeUrl}/signatures`, {
         method: 'POST',
         headers: {
-            'Authorization': apiKey,
+            'Authorization': apiToken,
             'Content-Type': 'application/json'
         },
         body: requestBody
@@ -70,6 +69,11 @@ const startSignature = async (documentId) => {
 }
 
 (async () => {
+    if (apiToken === '<YOUR-API-TOKEN>' || !apiToken) {
+        console.log('Error - Invalid token: Please set your API token.');
+        process.exit(1);
+    }
+
     console.log('\n##### Example Starting #####')
 
     const documentId = await uploadSampleDocument();
