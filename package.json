@@ -1,16 +1,13 @@
 {
-  "name": "ontask-esign-api-sample-node",
+  "name": "docubee-esign-api-sample-node",
   "version": "1.0.0",
   "description": "Samples of how to use OnTask's eSignature APIs",
   "main": "example-link.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "link": "node example-link.js",
     "email": "node example-email.js"
   },
   "author": "Mark Hansen",
   "license": "MIT",
-  "dependencies": {
-    "node-fetch": "^2.6.7"
-  }
+  "type": "module"
 }

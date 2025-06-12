@@ -1,10 +1,16 @@
-
 // Get your free API Key at: https://www.docubee.com/solutions/integrations/docubee-api
 // Full Docubee API Documentation: https://docs.docubee.app/#overview
-const { createReadStream } = require('fs');
+import { createReadStream } from 'fs';
 
 const docubeeUrl = 'https://docubee.app/api/v2';
-const apiToken = 'YOUR-API-KEY';
+
+const apiToken = process.env.YOUR_API_TOKEN || "YOUR_API_TOKEN";
+
+if (apiToken === "YOUR_API_TOKEN") {
+    console.log('Error - Invalid token: Please set YOUR_API_TOKEN token environment variable.');
+    process.exit(1);
+}
+
 const emailFinalized = "completed@example.com"; // Email address to receive the finalized document
 
 // Upload the file and get a documentId to pass to create a signature endpoint
@@ -19,7 +25,8 @@ const uploadSampleDocument = async () => {
             'Authorization': apiToken,
             'Content-Type': 'application/pdf'
         },
-        body: readStream
+        body: readStream,
+        duplex: 'half'
     });
 
     const { documentId } = await response.json();
@@ -65,19 +72,12 @@ const startSignature = async (documentId) => {
 }
 
 (async () => {
-    if (apiToken === '<YOUR-API-TOKEN>' || !apiToken) {
-        console.log('Error - Invalid token: Please set your API token.');
-        process.exit(1);
-    }
     console.log('\n##### Example Starting #####')
-
     const documentId = await uploadSampleDocument();
     console.log(`\nUploaded sample file and received a documentId of ${documentId}`)
-
     const response = await startSignature(documentId);
     console.log('\nURL for signer John Smith: (Follow URL to complete signature process)')
-    console.log(`${response['signers'][0]['contactMethod'][0]['taskUrl']}\n`);
+    console.log(`\n${response['signers'][0]['contactMethod'][0]['taskUrl']}\n`);
     console.log(`Once signed the final document will be sent to: ${emailFinalized}\n`)
-
     console.log('##### Example Complete #####\n')
 })();

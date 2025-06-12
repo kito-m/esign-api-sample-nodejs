@@ -1,14 +1,22 @@
-
 // Get your free API Key at: https://www.docubee.com/solutions/integrations/docubee-api
 // Full Docubee API Documentation: https://docs.docubee.app/#overview
-const { createReadStream } = require('fs');
+import { createReadStream } from 'fs';
 
 const docubeeUrl = 'https://docubee.app/api/v2';
-const apiToken = 'YOUR-API-KEY';
+
+const apiToken = process.env.YOUR_API_TOKEN || "YOUR_API_TOKEN";
+
+if (apiToken === "YOUR_API_TOKEN") {
+    console.log('Error - Invalid token: Please set you API token environment variable.');
+    process.exit(1);
+}
+
+
 const emailSigner = 'signer@example.com' // Email address of the signer
 const emailFinalized = 'completed@example.com'; // Email address to receive the finalized document
 
-// Upload the file and get a documentid to pass to create a signature endpoint
+
+// Upload the file and get a documentId to pass to create a signature endpoint
 // https://docs.docubee.app/?javascript#upload
 const uploadSampleDocument = async () => {
 
@@ -20,7 +28,8 @@ const uploadSampleDocument = async () => {
             'Authorization': apiToken,
             'Content-Type': 'application/pdf'
         },
-        body: readStream
+        body: readStream,
+        duplex: 'half'
     });
 
     const { documentId } = await response.json();
@@ -69,19 +78,11 @@ const startSignature = async (documentId) => {
 }
 
 (async () => {
-    if (apiToken === '<YOUR-API-TOKEN>' || !apiToken) {
-        console.log('Error - Invalid token: Please set your API token.');
-        process.exit(1);
-    }
-
     console.log('\n##### Example Starting #####')
-
     const documentId = await uploadSampleDocument();
     console.log(`\nUploaded sample file and received a documentId of ${documentId}`)
-
-    const response = await startSignature(documentId);
+    await startSignature(documentId);
     console.log(`\nSignature request sent, please check email at: ${emailSigner}`)
     console.log(`Once signed the final document will be sent to: ${emailFinalized}\n`)
-
     console.log('##### Example Complete #####\n')
 })();
