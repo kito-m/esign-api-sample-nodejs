@@ -4,7 +4,7 @@
 
 ## Requirements
 
-- [Node.js 16.x](https://nodejs.org/) or higher
+- [Node.js 18.13.0](https://nodejs.org/) or higher
 
 - You will first need to [sign up for an API developer account](https://docubee.app/signup?source=eSigApi) with Docubee and retrieve your API key.
 
