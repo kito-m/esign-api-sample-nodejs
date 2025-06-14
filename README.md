@@ -14,7 +14,7 @@
 
 ## Samples
 
-There are two examples included with the packages which can be found in the root project folder:
+There are two examples included with the package which can be found in the root project folder:
 
 - `example-email.js` - will send the document for signature to the email address set in the `emailSigner` variable. It will then send the completed document to the email address configured in the `emailFinalized` variable.
 
