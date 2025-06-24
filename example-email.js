@@ -2,9 +2,7 @@
 // Full Docubee API Documentation: https://docs.docubee.app/#overview
 import { createReadStream } from 'fs';
 
-const docubeeUrl = 'https://docubee.app/api/v2';
-
-const apiToken = process.env.YOUR_API_TOKEN || "YOUR_API_TOKEN";
+const apiToken = process.env.YOUR_API_TOKEN;
 
 if (apiToken === "YOUR_API_TOKEN") {
     console.log('Error - Invalid token: Please set you API token environment variable.');
@@ -22,7 +20,7 @@ const uploadSampleDocument = async () => {
 
     const readStream = createReadStream('./sample-files/sample.pdf');
 
-    const response = await fetch(`${docubeeUrl}/documents`, {
+    const response = await fetch('https://docubee.app/api/v2/documents', {
         method: 'POST',
         headers: {
             'Authorization': apiToken,
@@ -39,7 +37,6 @@ const uploadSampleDocument = async () => {
 // Call /signature endpoint to start signature process
 // https://docs.docubee.app/?javascript#signature-api
 const startSignature = async (documentId) => {
-
     const requestBody = JSON.stringify({
         documents: [
             { documentId }
@@ -64,7 +61,7 @@ const startSignature = async (documentId) => {
         ]
     });
 
-    const response = await fetch(`${docubeeUrl}/signatures`, {
+    const response = await fetch('https://docubee.app/api/v2/signatures', {
         method: 'POST',
         headers: {
             'Authorization': apiToken,

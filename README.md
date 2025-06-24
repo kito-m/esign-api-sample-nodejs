@@ -8,9 +8,7 @@
 
 - You will first need to [sign up for an API developer account](https://docubee.app/signup?source=eSigApi) with Docubee and retrieve your API key.
 
-- In the root folder, you can set your API key in one of two ways:
-    - Directly in the code: In example-email.js and example-link.js, assign your API key to the apiKey variable.
-    - As an environment variable: Set the key as YOUR_API_TOKEN.
+- Set your API key as an environment variable named `YOUR_API_TOKEN`.
 
 ## Samples
 
