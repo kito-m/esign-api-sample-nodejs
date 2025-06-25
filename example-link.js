@@ -4,7 +4,7 @@ import { createReadStream } from 'fs';
 
 const apiToken = process.env.YOUR_API_TOKEN;
 
-if (apiToken === "YOUR_API_TOKEN") {
+if (!apiToken) {
     console.log('Error - Invalid token: Please set YOUR_API_TOKEN token environment variable.');
     process.exit(1);
 }
